@@ -1,6 +1,10 @@
-import { readable } from 'svelte/store'
+import { readable } from 'svelte/store';
 
-//aka p5 map
-export const  map_range = (value, low1, high1, low2, high2) => {
-    return low2 + (high2 - low2) * (value - low1) / (high1 - low1);
-}
+//seconds
+export const seconds = readable(new Date(), set => {
+    const interval = setInterval(() => {
+        set(new Date().getSeconds())
+    }, 1000);
+
+    return () => clearInterval(interval)
+})

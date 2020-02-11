@@ -1,91 +1,50 @@
 <script>
 	import { onMount } from 'svelte'
 	import TurningImageBottom from './components/TurningImageBottom.svelte' 
-
-	//time
-	let seconds = 0
-
-	import { readable } from 'svelte/store';
-
-	const time = readable(new Date(), set => {
-		const interval = setInterval(() => {
-			set(new Date().getSeconds())
-		}, 1000);
-
-		return () => clearInterval(interval)
-	})
-
-	const unsubscribe = time.subscribe(t => {
-		// console.log(seconds ++)
-		seconds ++
-	})
-
-	//aka p5 map
-	function map_range(value, low1, high1, low2, high2) {
-		return low2 + (high2 - low2) * (value - low1) / (high1 - low1);
-	}
+	import Cross from './components/Cross.svelte' 
 
 	//scrolling
 	let y = 0
 
 	//Rounded y scroll value
 	$: scrollPos = Math.round(y) 
-	
-	//Dir check variable
-	let lastY = 0
 
-	function scrollDir(y){
-		let ret = y - lastY < 0 ? 'up' : 'down'
-		lastY = y
-		return ret
-	}
-	$: scrollDirection = scrollDir(y)
-
+	let scrollSpeed = 12
 	let viewportHeight
-	let scrollSpeed = 8
 
-
-	//mouse
 	$: m = { x: 0, y: 0 };
 
-	function handleMousemove(event) {
+	export function handleMouseMove(event) {
 		m.x = event.clientX;
 		m.y = event.clientY;
-		console.log(m)
-	}
-
-	//Keyboard
-	function handleKeydown(event) {
-		console.log(event.key)
+		return m
 	}
 
 </script>
 
-<svelte:window bind:scrollY={y} on:keydown={handleKeydown} bind:innerHeight={viewportHeight} on:mousemove={handleMousemove}/>
+<svelte:window bind:scrollY={y} bind:innerHeight={viewportHeight} on:mousemove={handleMouseMove}/>
 
 <div class="menu">
 	<div><h3>{scrollPos}</h3></div>
 </div>
 
-<!-- The parts of the 3D elements that are behind the user — i.e. their z-axis coordinates are greater than the value of the perspective CSS property — are not drawn. -->
+<div class='pageheight' style="height:{scrollPos + viewportHeight + scrollSpeed}px">
+	<Cross enter='right' leave='bottom' start={20}  stop={300} cont={400} end={700} scrollPos={scrollPos} bgColor='purple'>
+		<div slot='before'>		
+			<h1>The old man and the sea</h1>
+			<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Accusantium exercitationem earum sint aliquid magni, praesentium eos asperiores omnis enim iure nesciunt qui veniam consequuntur nisi laudantium maxime laboriosam ipsum. Deserunt.</p>
+		</div>
+	</Cross>
 
-<div class='pageheight' style="height:{6000}px">
-	<TurningImageBottom 
-		scrollStart=0 
-		scrollPos={scrollPos}
-		src='./img/tree.png'/>
-	<TurningImageBottom 
-		scrollStart=400
-		scrollPos={scrollPos}
-		src='./img/japflowers.webp'/>
-	<TurningImageBottom 
-		scrollStart=1000
-		scrollPos={scrollPos}
-		src='./img/flowers.png'/>
-	<TurningImageBottom 
-		scrollStart=1900
-		scrollPos={scrollPos}
-		src='./img/beach.png'/>
+	<Cross enter='top' leave='right' start={400}  stop={700} cont={800} end={1200} scrollPos={scrollPos}>
+		<div slot='custom'>
+			<h1 class='verybig'>The sanctions</h1>
+		</div>
+	</Cross>
+
+	<Cross src='./img/athmos4.JPG' enter='left' leave='bottom' start={800}  stop={1200} cont={1400} end={1900} scrollPos={scrollPos} />
+
+	<Cross src='./img/bath100.JPG' enter='top' leave='right' start={1400}  stop={1900} cont={2000} end={2300} scrollPos={scrollPos} />
 </div>
 
 
@@ -104,9 +63,16 @@
 	.menu h3{
 		margin:0;
 	}
+	h1.verybig{
+		font-size: 20vh;
+	}
 	:global(body, html) {
 		font-family:'Josefin Sans';
 		margin: 0;
 		padding: 0;
+		scroll-behavior: smooth;
+	}
+	:global(*) {
+		box-sizing:border-box;
 	}
 </style>

@@ -29,7 +29,7 @@
 </div>
 
 <div class='pageheight' style="height:{scrollPos + viewportHeight + scrollSpeed}px">
-	<Cross enter='right' leave='bottom' start={20}  stop={300} cont={400} end={700} scrollPos={scrollPos} bgColor='purple'>
+	<Cross enter='right' leave='bottom' start={0}  stop={300} cont={400} end={700} scrollPos={scrollPos} bgColor='purple'>
 		<div slot='before'>		
 			<h1>The old man and the sea</h1>
 			<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Accusantium exercitationem earum sint aliquid magni, praesentium eos asperiores omnis enim iure nesciunt qui veniam consequuntur nisi laudantium maxime laboriosam ipsum. Deserunt.</p>

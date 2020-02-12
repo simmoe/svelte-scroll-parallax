@@ -48,14 +48,9 @@
 	$: (stop-start) - seqIn < 5 && reset()
 	$: scrollPos > cont && scrollPos < cont + 5 && reset()
 
-	const up = (node) => {
-		console.log('created ', node)
-	}
-
 </script>
 
 <div 	
-		use:up
 		bind:clientHeight={height} 
 		bind:clientWidth={width} 
 		class='abs' 
